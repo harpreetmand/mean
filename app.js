@@ -4,12 +4,14 @@ var path = require('path');
 
 app.set('port', 3000);
 
-app.get('/', function(req, res){
-    console.log("home page");
-    res
-    .status(200)
-    .sendFile(path.join(__dirname, 'public', 'index.html'));
-})
+app.use(express.static(path.join(__dirname, 'public')));
+
+// app.get('/', function(req, res){
+//     console.log("home page");
+//     res
+//     .status(200)
+//     .sendFile(path.join(__dirname, 'public', 'index.html'));
+// })
 
 app.get('/json', function(req, res){
     console.log("json");

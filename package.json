@@ -1,0 +1,29 @@
+{
+  "name": "mean",
+  "version": "1.0.0",
+  "description": "learning nom",
+  "main": "app.js",
+  "scripts": {
+      "start" : "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harpreetmand/mean.git"
+  },
+  "keywords": [
+    "mean"
+  ],
+  "author": "Harpreet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/harpreetmand/mean/issues"
+  },
+  "homepage": "https://github.com/harpreetmand/mean#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  },
+  "devDependencies": {
+    "mocha": "^3.4.2"
+  }
+}

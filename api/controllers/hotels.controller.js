@@ -1,8 +1,9 @@
-var hotelData = require('../data/hotel-data.json')
+var mongoose = require('mongoose');
+var Hotel = mongoose.model('Hotel');
 
 module.exports.hotelGetAll = function(req, res){
-    console.log("sending json from controller");
-    console.log(req.query);
+
+    
     var offset = 0;
     var count = 5;
 
@@ -13,26 +14,66 @@ module.exports.hotelGetAll = function(req, res){
         count = parseInt(req.query.count, 10);
     }
 
-    var returnData = hotelData.slice(offset, offset+count);
-
-    res
-    .status(200)
-    .json( returnData );
-}
+    Hotel
+        .find()
+        .skip(offset)
+        .limit(count)
+        .exec(function(err, hotels){
+            console.log("Found hotels", hotels.length)
+            res
+                .status(200)
+                .json(hotels);
+        });
+};
 module.exports.hotelGetOne = function(req, res){
+
+
     var hotelId = req.params.hotelId;
-    var thisHotel = hotelData[hotelId];
-    console.log("gettting one hotel", hotelId);
-    res
-    .status(200)
-    .json( thisHotel );
-}
+
+    Hotel
+        .findById(hotelId)
+        .exec(function(err, doc){
+            res
+                .status(200)
+                .json( doc );
+        
+        });
+};
+    // collection
+    //     .findOne({
+    //             _id : ObjectId(hotelId)
+    //     },function(err, doc){
+    //         res
+    //         .status(200)
+    //         .json( doc );
+
+    //     })
+    // var thisHotel = hotelData[hotelId];
+    // console.log("gettting one hotel", hotelId);
 
 module.exports.hotelAddOne = function(req, res){
+    var db = dbconn.get();
+    var collection = db.collection('hotel');
+    var newHotel;
+
     console.log("post new data");
-    console.log(req.body);
+
+    if(req.body && req.body.name && req.body.stars){
+        newHotel = req.body;
+        newHotel.stars = parseInt(newHotel.stars,10);
+
+        collection
+            .insertOne(newHotel, function(err, response){
+        console.log(response.ops);
+        res
+            .status(201)
+            .json(response.ops);
+                
+            });
+    
+}else
     res
-    .status(200)
-    .json(req.body);
+    .status(400)
+    .json({message: "required data missing"});
 
 }
